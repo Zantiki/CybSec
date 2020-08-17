@@ -1,0 +1,7 @@
+
+# CPP Cmds
+g++ HelloWorld.cpp -o HelloWorld.o
+./HelloWorld.o
+
+# Wireshark
+sudo wireshark
