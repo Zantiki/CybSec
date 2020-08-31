@@ -6,3 +6,5 @@
 
 ## To rebuild library on code-change, rerun:
     $ ./compile_link.sh
+
+## On fixed typo in more_functions and rebuilding library, the output has the corrected word.
