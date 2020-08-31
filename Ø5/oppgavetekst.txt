@@ -1,13 +1,15 @@
 1 #
-    Hentet index.html fra google.com ved hjelp av commando:
+
+    Hentet index.html fra google.com og et bilde av Obama ved hjelp av kommando:
     $ wget google.com
+    $ wget https://upload.wikimedia.org/wikipedia/commons/8/8d/President_Barack_Obama.jpg
 
 2 #
 
     #!/bin/bash
 
     compression_limit=5
-
+    # Bruke oving3 som testmappe
     files=$(find  ~/oving3 -mtime +$compression_limit -size +10k -print)
 
     echo $files
@@ -15,7 +17,28 @@
     for value in $files
     do
         gzip $value
-        files=$(find  ~/oving3 -mtime +$compression_limit -print)
     done
 
-    
+3 #
+
+    Ved kjøring andre gang vil vi finne filene som allerede har blitt flyttet til undermappen og flytte
+    disse til en ny undermappe under undermappen. Vi løser dette ved å eksludere jpgs-mappen i find-kommandoen.
+
+4 #
+
+    find . -name \*.txt -exec cp {} {}.copy \; vil lage en kopi av alle txt filene i mappen med .copy bak.
+
+5 #
+
+    Kommandoer dekket med `` er det som vil bli kjørt først.
+
+    $ echo Jeg heter `whoami`: Hent whoami før echoen printes
+    $ MASKIN=`hostname`: Hent hostname til maskinen før man setter variabel.
+
+6 #
+
+    Ved å legge til linjene:
+    */2   8-12,13-16 * * 1-6 root killall quake
+    30/2 12-13       * * 1-6 root killall quake
+    i crontab, vill alle prosesser ved navn quake bli stoppet i tidsrommet gitt. Dette stopper allikevel ikke alle,
+    da prosesser kan gis et nytt navn.
