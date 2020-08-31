@@ -5,6 +5,6 @@
     $ ./compile_link.sh
 
 ## To rebuild library on code-change, rerun:
-    $ ./compile_link.sh
+    $ ./create_dynamic.sh
 
 ## On fixed typo in more_functions and rebuilding library, the output has the corrected word.
