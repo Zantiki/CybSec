@@ -2,61 +2,54 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *string_modifier(char *text)
-{
+char *string_modifier(char *text){
   char *res;
-  int orig_len = strlen(text);
-  int res_len = orig_len;
+  int original_length = strlen(text);
+  int result_length = original_length;
   printf("String before modification: %s\n", text);
 
-  for (int i = 0; i < orig_len; i++)
-  {
-    if (memcmp(&text[i], "&", 1) == 0)
-    {
-      res_len += strlen("&amp");
+  for (int i = 0; i < original_length; i++){
+    if (memcmp(&text[i], "&", 1) == 0){
+      result_length += strlen("&amp");
     }
-    else if (memcmp(&text[i], "<", 1) == 0)
-    {
-      res_len += strlen("&lt");
+    else if (memcmp(&text[i], "<", 1) == 0){
+      result_length += strlen("&lt");
     }
-    else if (memcmp(&text[i], ">", 1) == 0)
-    {
-      res_len += strlen("&gt");
+    else if (memcmp(&text[i], ">", 1) == 0){
+      result_length += strlen("&gt");
     }
-    else
-    {
-      res_len++;
+    else{
+      result_length++;
     }
   }
 
-  res = (char *)malloc(sizeof(char) * res_len + 1);
+  res = (char *)malloc(sizeof(char) * result_length + 1);
 
-  int temp_index = 0;
-  for (int i = 0; i < orig_len; i++){
+  int y = 0;
+  for (int i = 0; i < original_length; i++){
 
     if (memcmp(&text[i], "&", 1) == 0){
-      memcpy(&res[temp_index], "&amp", strlen("&amp"));
-      temp_index += strlen("&amp");
+      memcpy(&res[y], "&amp", strlen("&amp"));
+      y += strlen("&amp");
     }
     else if (memcmp(&text[i], "<", 1) == 0){
-      memcpy(&res[temp_index], "&lt", strlen("&lt"));
-      temp_index += strlen("&lt");
+      memcpy(&res[y], "&lt", strlen("&lt"));
+      y += strlen("&lt");
     }
     else if (memcmp(&text[i], ">", 1) == 0){
-      memcpy(&res[temp_index], "&gt", strlen("&gt"));
-      temp_index += strlen("&gt");
+      memcpy(&res[y], "&gt", strlen("&gt"));
+      y += strlen("&gt");
     }
     else{
-      memcpy(&res[temp_index], &text[i], sizeof(char));
-      temp_index++;
+      memcpy(&res[y], &text[i], sizeof(char));
+      y++;
     }
   }
   printf("String after modification: %s\n", res);
   return res;
 }
 
-int main()
-{
+int main(){
   char *tmp = "yoyo && <<<><>>> maccaflow";
   char *msg = string_modifier(tmp);
   free(msg);
