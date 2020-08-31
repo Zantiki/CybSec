@@ -1,0 +1,8 @@
+## To build the library and copy locally run:
+    $ ./create_dynamic.sh
+
+## Compile the project:
+    $ ./compile_link.sh
+
+## To rebuild library on code-change, rerun:
+    $ ./compile_link.sh
