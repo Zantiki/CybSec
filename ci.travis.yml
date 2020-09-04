@@ -1,0 +1,19 @@
+dist: ubuntu:latest
+language: c
+
+branches:
+  only:
+    - master
+
+install: make get-deps
+
+compiler:
+  - clang
+  - gcc
+
+jobs:
+  include:
+    - stage: Fuzz
+        script: Ø6/fuzz.sh
+    - stage:
+        script: Ø6/test.sh
