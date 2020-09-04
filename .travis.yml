@@ -1,6 +1,6 @@
 language: c
 dist: xenial
-compiler gcc
+compiler: gcc
 
 
 branches:
