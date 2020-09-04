@@ -1,3 +1,3 @@
 #!/bin/bash
 echo I am fuzzing
-./run_c.sh
+o6/run_c.sh
