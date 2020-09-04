@@ -1,2 +1,3 @@
 #!/bin/bash
-echo I am fuzzing helllllllllllllloooooooo
+echo I am fuzzing
+./run_c.sh
