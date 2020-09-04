@@ -1,4 +1,3 @@
-dist: ubuntu:latest
 language: c
 
 branches:
@@ -14,6 +13,6 @@ compiler:
 jobs:
   include:
     - stage: Fuzz
-        script: Ø6/fuzz.sh
-    - stage:
-        script: Ø6/test.sh
+      script: Ø6/fuzz.sh
+    - stage: Test
+      script: Ø6/test.sh
