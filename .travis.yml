@@ -1,14 +1,11 @@
 language: c
+dist: xenial
+compiler gcc
+
 
 branches:
   only:
     - master
-
-install: make get-deps
-
-compiler:
-  - clang
-  - gcc
 
 jobs:
   include:
