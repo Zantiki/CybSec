@@ -1,2 +1,2 @@
 #!/bin/bash
-echo I am fuzzing
+echo I am fuzzing xD
