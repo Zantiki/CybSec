@@ -10,6 +10,6 @@ branches:
 jobs:
   include:
     - stage: Fuzz
-      script: Ø6/fuzz.sh
+      script: o6/fuzz.sh
     - stage: Test
-      script: Ø6/test.sh
+      script: o6/test.sh
