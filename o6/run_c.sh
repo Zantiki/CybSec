@@ -1,5 +1,5 @@
 #!/bin/bash
-file_path=testing/fuzz_test
+file_path=o6/testing/fuzz_test
 
 echo "compiling "$file_path
 # gcc -fsanitize=address -ggdb -o test test.c
