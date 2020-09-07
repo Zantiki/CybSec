@@ -8,4 +8,4 @@ echo "Program output: "
 echo
 ./$file_path
 sleep 3
-rm $file_path
+# rm $file_path

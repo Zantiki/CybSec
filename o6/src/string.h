@@ -3,7 +3,7 @@
 #include <string.h>
 
 char *string_modifier(char *text){
-    char *res;
+    //char *res;
     int original_length = strlen(text);
     int result_length = original_length;
     printf("String before modification: %s\n", text);
@@ -25,7 +25,8 @@ char *string_modifier(char *text){
     }
 
     // Allocate memory for string
-    res = (char *)malloc(sizeof(char) * result_length + 1);
+    char *res = (char *)malloc(sizeof(char) * result_length);
+    //char res[result_length+1];
 
     int y = 0;
     // Copy string to allocated memory
