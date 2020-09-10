@@ -1,0 +1,15 @@
+language: c
+dist: xenial
+compiler: clang
+
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - stage: Fuzz
+      script: o6/fuzz.sh
+    - stage: Test
+      script: o6/test.sh

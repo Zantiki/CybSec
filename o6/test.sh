@@ -8,4 +8,5 @@ echo "Making executable for "$file_path
 echo "Program output: "
 echo
 ./$file_path
+rm $file_path
 sleep 3
