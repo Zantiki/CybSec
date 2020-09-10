@@ -2,10 +2,8 @@
 file_path=o6/testing/fuzz_test
 
 echo "compiling "$file_path
-# gcc -fsanitize=address -ggdb -o test test.c
-clang -fsanitize=fuzzer,address -ggdb -o $file_path $file_path.c
+clang -g -O1 -fsanitize=fuzzer,address -o $file_path $file_path.c
 echo "Making executable for "$file_path
-# ld $file_path.o -o $file_path
 echo "Program output: "
 echo
 ./$file_path -max_total_time=20

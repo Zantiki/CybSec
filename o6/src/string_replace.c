@@ -3,16 +3,10 @@
 #include <string.h>
 
 char *string_modifier(char *text){
-    //char *res;
-    if (!text){
-        return text;
-    }
-    //size_t original_length = sizeof text;
-    //return text;
-    size_t original_length = strlen(text);
-    //size_t original_length = sizeof text;
-    size_t result_length = original_length;
-    printf("String before modification: %s\n", text);
+    int original_length = strlen(text);
+    int result_length = original_length;
+    // printf("String before modification: %s\n", text);
+    //exit(0);
 
     for (int i = 0; i < original_length; i++){
         // Check if refrence contains the char append to result_length
@@ -31,7 +25,7 @@ char *string_modifier(char *text){
     }
 
     // Allocate memory for string
-   // char *res = (char *)malloc(sizeof(char) * result_length);
+   //char *res = (char *)malloc(sizeof(char) * result_length);
     //char *res = (char *)malloc(sizeof(char) * result_length);
     char res[result_length+1];
 
@@ -56,6 +50,6 @@ char *string_modifier(char *text){
             y++;
         }
     }
-    printf("String after modification: %s\n", res);
+    //printf("String after modification: %s\n", res);
     return res;
 }
