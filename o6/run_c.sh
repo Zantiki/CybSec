@@ -6,6 +6,8 @@ clang -g -O1 -fsanitize=fuzzer,address -o $file_path $file_path.c
 echo "Making executable for "$file_path
 echo "Program output: "
 echo
-./$file_path -max_total_time=20
+exec ./$file_path -max_total_time=20
+exit_code=$?
 sleep 3
 rm $file_path
+exit $exit_code
