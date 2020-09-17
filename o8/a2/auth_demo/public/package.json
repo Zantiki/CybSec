@@ -1,0 +1,36 @@
+{
+  "name": "a2",
+  "version": "1.0.0",
+  "description": "fun",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "yoyo",
+    "start": "node ../server/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "history": "^5.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "crypto-js": "^4.0.0"
+  }
+}

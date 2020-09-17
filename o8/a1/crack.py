@@ -45,8 +45,8 @@ if __name__=="__main__":
     sc = SparkContext.getOrCreate()
     expected_hash = "ab29d7b5c589e18b52261ecba1d3a7e7cbf212c6"
     expected_salt = "Saltet til Ola"
-    print("Attempting crack on {} cores".format(os.cpu_count()))
-    print("You can access spark-gui on http://localhost:4040/jobs/")
+    print("\nAttempting crack on {} cores".format(os.cpu_count()))
+    print("You can access spark-gui on http://localhost:4040/jobs/\n")
     total_processed = 0
 
     for i in range(1, 5):
@@ -75,7 +75,7 @@ if __name__=="__main__":
             if len(result) > 0:
                 print("Result: ", result)
                 input("result found, kill? (press enter)")
-                break
+                exit(0)
             print("{} possibilities processed,  no password found".format(total_processed))
             if end_of_iter:
                 break
