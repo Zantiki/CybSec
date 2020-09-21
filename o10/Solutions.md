@@ -1,6 +1,7 @@
 # Part 1:
 Probable locations of vulnerability:
-main, line 8. Outputting user-input, risk of address exposure.
+main, line 8. Outputting user-input, risk of address exposure. 
+This string is also not null-terminated.
 ```c
 undefined8 main(void)
 
