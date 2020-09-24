@@ -44,7 +44,7 @@ do
   fi
 done
 
-echo "domain names: "$domain
+# echo "domain names: "$domain
 echo "ipv4s: "$ipv4s
 echo "ipv6s: "$ipv6s
 echo
