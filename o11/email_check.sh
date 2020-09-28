@@ -20,6 +20,10 @@ function recursive_lookup() {
    echo echo $string | cut -d "=" -f 2 | cut -d "\"" -f 1
    recursive_lookup $(echo $string | cut -d "=" -f 2 | cut -d "\"" -f 1)
   fi
+  if [[ $string =~ ip4:.* ]]
+  then
+    echo $string
+  fi
   done
   return
 }
@@ -94,6 +98,10 @@ do
   then
     echo $string | cut -d "=" -f 2 | cut -d "\"" -f 1
     recursive_lookup $(echo $string | cut -d "=" -f 2 | cut -d "\"" -f 1)
+  fi
+  if [[ $string =~ ip4:.* ]]
+  then
+    echo $string
   fi
 
 done
