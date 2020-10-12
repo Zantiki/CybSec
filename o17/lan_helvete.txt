@@ -1,0 +1,7 @@
+# Skru av kort
+sudo ip link set dev wlp2s0 down
+# Sett i monitor og skru på
+-Glem nettverket du er koblet til
+sudo airmon-ng start wlp2s0
+# sjekk modus
+sudo iwconfig wlp2s0
