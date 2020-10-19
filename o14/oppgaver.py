@@ -86,7 +86,7 @@ def oppgave3a():
     print(result)
 
 def oppgave4a():
-    print("29 Nøkler")
+    print("29! Nøkler")
 
 def oppgave4b():
     print("Vi kan kombinere med caesar-schiffer for å jobbe rundt frekvensanalysen. f.eks")
