@@ -3,6 +3,7 @@ import numpy as np
 from numpy.linalg import inv, det
 import string
 import random
+import sympy
 
 def gcd(a, b):
     while b:
@@ -25,8 +26,7 @@ def congruence(a, b, m):
 
 def oppgave1():
     ledd1 = 232 + (22 * 7)
-    ledd2 = congruence(1, math.pow(18, 2), 8)
-    print(ledd2)
+    ledd2 = math.pow(18, 2) % 8
     print(ledd1 - ledd2)
 
 def oppgave2a():
@@ -53,22 +53,6 @@ def modInverse(a, m) :
             return x
     return 1
 
-def oppgave3b():
-    N = 9
-    z10 = np.fromfunction(lambda i,j:(i+1)*(j+1) % N, (N-1,N-1))
-    # Finn den inverse matrisen a over z10
-    a = np.array([
-        [2, -1],
-        [5, 8]
-    ])
-    print(z10)
-    result = inv(a)
-    print(det(a))
-    multi_inverse = modInverse(det(a), N)
-    result = result * 21 * multi_inverse # Matrise med omformet determinant
-    result = a * result
-    print(result)
-
 def oppgave3a():
     N = 10
     z10 = np.fromfunction(lambda i,j:(i+1)*(j+1) % N, (N-1,N-1))
@@ -79,11 +63,25 @@ def oppgave3a():
     ])
     print(z10)
     result = inv(a)
-    print(det(a))
-    multi_inverse = modInverse(det(a), N)
-    result = result * 21 * multi_inverse # Matrise med omformet determinant
-    result = a * result
+    # Vi leser inversen fra tabellen
+    print("%d har multiplikativ invers %d" % (det(a), 1))
+    result = result * 21 # Matrise med omformet determinant
     print(result)
+    print("er kongurent med ")
+    # -5 er ikke i z10, men det er 5 (-5 + 10)
+    result[1][0] = result[1][0] + 10
+    print(result, "\n")
+
+def oppgave3b():
+    N = 9
+    z9 = np.fromfunction(lambda i,j:(i+1)*(j+1) % N, (N-1,N-1))
+    # Finn den inverse matrisen a over z10
+    a = np.array([
+        [2, -1],
+        [5, 8]
+    ])
+    print(z9)
+    print("%d har multiplikativ invers %d" % (det(a), 3))
 
 def oppgave4a():
     print("29! Nøkler")
@@ -112,8 +110,6 @@ def encode_6(message, block_size, alphabet):
     return encrypted_blocks
 
 
-
-
 def oppgave6():
     alpha_nor = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å", " "]
     message = "Dette er en test"
@@ -129,7 +125,6 @@ def oppgave6():
         decrypted += k_shift_decrypt(num_code, key, alpha_nor)
 
     print(decrypted)
-
 
 
 def k_shift_encrypt(message, k, alphabet):
@@ -178,6 +173,111 @@ def oppgave5():
     result = "HJERNEN ER ALENE"
     print(result)
 
+def oppgave7a():
+    encrypted = vign("Nåerdetsnarthelg", "torsk", "e")
+    vign(encrypted, "torsk", "d")
+
+def oppgave7b():
+    vign("QZQOBVCAFFKSDC", "brus", "d")
+
+def oppgave7c():
+    print("Det er m nøkler, i.e 5 stk")
+
+def oppgave8a():
+    N = 29
+    z29 = np.fromfunction(lambda i,j:(i+1)*(j+1) % N, (N-1,N-1))
+    # Finn den inverse matrisen a over z10
+    a = np.array([
+        [11, 8],
+        [3, 7]
+    ])
+    # print(z29)
+    result = inv(a)
+    result = (result*det(a))# Matrise med omformet determinant
+    # result = a * result
+    result[1][0] = result[1][0] + N
+    result[0][1] = result[0][1] + N
+    print(result)
+    return result
+
+def oppgave8b():
+    chiper = "PRIM"
+    code = []
+    alpha_nor = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å"]
+    for letter in list(chiper):
+        code.append(alpha_nor.index(letter))
+    k = np.array([
+        [11, 8],
+        [3, 7]
+    ])
+    code_matrix = np.array([
+        [code[0], code[1]],
+        [code[2], code[3]]
+    ])
+
+    inv_k = oppgave8a()
+    encrypted = np.matmul(code_matrix, k)
+
+    encrypted = encrypted % 29
+    print("Unencrypted: ")
+    print(code_matrix)
+    print("encrypted: ")
+    print(encrypted)
+    """print("decrypted: ")
+    decrypted = np.matmul(encrypted, inv_k)
+    decrypted = decrypted % 29
+    decrypted[1][0] = decrypted[1][0] + 29
+    decrypted[0][1] = decrypted[0][1] + 29
+    print(decrypted % 29)
+    return encrypted"""
+
+def oppgave8c():
+    pass
+
+def oppgave8d():
+    pass
+
+def vign(txt='', key='', typ='d'):
+    txt = txt.upper()
+    key = key.upper()
+
+    universe = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å"]
+
+    uni_len = len(universe)
+    if not txt:
+        print('Needs text.')
+        return
+    if not key:
+        print('Needs key.')
+        return
+    if typ not in ('d', 'e'):
+        print('Type must be "d" or "e".')
+        return
+    if any(t not in universe for t in key):
+        print('Invalid characters in the key. Must only use ASCII symbols.')
+        return
+
+    ret_txt = ''
+    k_len = len(key)
+
+    for i, l in enumerate(txt):
+        if l not in universe:
+            ret_txt += l
+        else:
+            txt_idx = universe.index(l)
+
+            k = key[i % k_len]
+            key_idx = universe.index(k)
+            if typ == 'd':
+                key_idx *= -1
+
+            code = universe[(txt_idx + key_idx) % uni_len]
+
+            ret_txt += code
+
+    print(ret_txt)
+    return ret_txt
+
 if __name__ == "__main__":
     print("--- OPPGVAE 1 ---")
     oppgave1()
@@ -196,3 +296,9 @@ if __name__ == "__main__":
     oppgave5()
     print("--- OPPGAVE 6 ---")
     oppgave6()
+    print("--- OPPGAVE 7 ---")
+    oppgave7a()
+    oppgave7b()
+    oppgave7c()
+    print("--- OPPGAVE 8 ---")
+    oppgave8b()
