@@ -296,13 +296,13 @@ def oppgave8d():
         [code[0], code[1]],
         [code[2], code[3]]
     ]),
-        key)
+        key % N)
     # key[1][0] -= N
-    key = np.array(sympy.Matrix(key).inv_mod(29))
+    key = key % N
     print(key)
-    print(code)
 
-    print(np.array(sympy.Matrix(encrypted).inv_mod(29)))
+    print("Encrypted reproduced: ")
+    print(encrypted % N)
 
 
 def vign(txt='', key='', typ='d'):
