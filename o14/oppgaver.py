@@ -191,16 +191,20 @@ def oppgave8a():
         [11, 8],
         [3, 7]
     ])
+    return np.array(sympy.Matrix(a).inv_mod(29))
+    """print(np.array(sympy.Matrix(a).inv_mod(29)))
     # print(z29)
     result = inv(a)
     result = (result*det(a))# Matrise med omformet determinant
     # result = a * result
     result[1][0] = result[1][0] + N
     result[0][1] = result[0][1] + N
+    print("inverse k-a")
     print(result)
-    return result
+    return result"""
 
 def oppgave8b():
+    N = 29
     chiper = "PRIM"
     code = []
     alpha_nor = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å"]
@@ -216,26 +220,90 @@ def oppgave8b():
     ])
 
     inv_k = oppgave8a()
-    encrypted = np.matmul(code_matrix, k)
+    encrypted = np.matmul(code_matrix, k) % 29
 
-    encrypted = encrypted % 29
+    # encrypted = np.array(sympy.Matrix(encrypted).inv_mod(29))
     print("Unencrypted: ")
     print(code_matrix)
-    print("encrypted: ")
+    print("encrypted-b: ")
     print(encrypted)
-    """print("decrypted: ")
-    decrypted = np.matmul(encrypted, inv_k)
-    decrypted = decrypted % 29
-    decrypted[1][0] = decrypted[1][0] + 29
-    decrypted[0][1] = decrypted[0][1] + 29
-    print(decrypted % 29)
-    return encrypted"""
+    print("Decrypted")
+    print(np.matmul(encrypted, inv_k) % 29)
 
 def oppgave8c():
-    pass
+    chiper = "TOYYSN"
+    code = []
+    alpha_nor = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å"]
+    for letter in list(chiper):
+        code.append(alpha_nor.index(letter))
+    k = np.array([
+        [11, 8],
+        [3, 7]
+    ])
+    code_matrix = np.array([
+        [code[0], code[1]],
+        [code[2], code[3]],
+        [code[4], code[5]]
+    ])
+
+    inv_k = oppgave8a()
+    decrypted = np.matmul(code_matrix, inv_k)
+    print("decrypted-c: ")
+    print(decrypted % 29)
+    decrypted = decrypted % 29
+    decoded = []
+    for row in decrypted:
+        for element in row:
+            decoded.append(alpha_nor[int(element)])
+    print("".join(decoded))
+
 
 def oppgave8d():
-    pass
+    N = 29
+    chiper = "EASY"
+    code = []
+    alpha_nor = list(string.ascii_uppercase) + ['Æ', 'Ø', "Å"]
+    for letter in list(chiper):
+        code.append(alpha_nor.index(letter))
+    k = np.array([
+        [11, 8],
+        [3, 7]
+    ])
+    code_matrix1 = np.array([
+        [code[0], code[1]],
+        [code[2], code[3]]
+    ])
+
+    chiper = "IØÅY"
+    code2 = []
+    for letter in list(chiper):
+        code2.append(alpha_nor.index(letter))
+    code_matrix2 = np.array([
+        [code2[0], code2[1]],
+        [code2[2], code2[3]]
+    ])
+    print("EASY")
+    print(code_matrix1)
+    print("IØÅY")
+    print(code_matrix2)
+
+    print("inverse congurent x")
+    code_matrix1 = np.array(sympy.Matrix(code_matrix1).inv_mod(29))
+    print(code_matrix1)
+    print("Key")
+    key = np.matmul(code_matrix1, code_matrix2)
+    encrypted = np.matmul(np.array([
+        [code[0], code[1]],
+        [code[2], code[3]]
+    ]),
+        key)
+    # key[1][0] -= N
+    key = np.array(sympy.Matrix(key).inv_mod(29))
+    print(key)
+    print(code)
+
+    print(np.array(sympy.Matrix(encrypted).inv_mod(29)))
+
 
 def vign(txt='', key='', typ='d'):
     txt = txt.upper()
@@ -301,4 +369,9 @@ if __name__ == "__main__":
     oppgave7b()
     oppgave7c()
     print("--- OPPGAVE 8 ---")
+    print("\nb")
     oppgave8b()
+    print("\nc")
+    oppgave8c()
+    print("\nd")
+    oppgave8d()
