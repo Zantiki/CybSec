@@ -191,6 +191,7 @@ def oppgave8a():
         [11, 8],
         [3, 7]
     ])
+    print(np.array(sympy.Matrix(a).inv_mod(29)))
     return np.array(sympy.Matrix(a).inv_mod(29))
     """print(np.array(sympy.Matrix(a).inv_mod(29)))
     # print(z29)
