@@ -81,7 +81,7 @@ def oppgave3b():
         [5, 8]
     ])
     print(z9)
-    print("%d har multiplikativ invers %d" % (det(a), 3))
+    print("%d har multiplikativ invers %d og er derfor ikke kongurent" % (det(a), 3))
 
 def oppgave4a():
     print("29! Nøkler")
@@ -90,7 +90,7 @@ def oppgave4b():
     print("Vi kan kombinere med caesar-schiffer for å jobbe rundt frekvensanalysen. f.eks")
 
 def oppgave4c():
-    print("n! nøkler")
+    print("N!/(N-n)! nøkler")
 
 
 def encode_6(message, block_size, alphabet):
@@ -167,8 +167,8 @@ def oppgave5():
     for letter in list(chiper):
         code.append(alpha_nor.index(letter))
 
-    for num in range(1, 20):
-        print(k_shift_decrypt(code, num, alpha_nor))
+    # for num in range(1, 20):
+        # print(k_shift_decrypt(code, num, alpha_nor))
 
     result = "HJERNEN ER ALENE"
     print(result)
@@ -191,18 +191,9 @@ def oppgave8a():
         [11, 8],
         [3, 7]
     ])
+    print("inverse K")
     print(np.array(sympy.Matrix(a).inv_mod(29)))
     return np.array(sympy.Matrix(a).inv_mod(29))
-    """print(np.array(sympy.Matrix(a).inv_mod(29)))
-    # print(z29)
-    result = inv(a)
-    result = (result*det(a))# Matrise med omformet determinant
-    # result = a * result
-    result[1][0] = result[1][0] + N
-    result[0][1] = result[0][1] + N
-    print("inverse k-a")
-    print(result)
-    return result"""
 
 def oppgave8b():
     N = 29
