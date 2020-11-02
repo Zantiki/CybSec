@@ -102,26 +102,69 @@ def oppgave_5():
     print("\nOPPGAVE 5")
     hex_string = "24 59 66 0c 99 da 9b 00 d6 55 fd 20 e9 ff 46 95"
     hex_key = "67 71 35 c4 ff da e5 ff 1c 54 e1 fd 7f 2e 88 b7"
+    encrypted_string = "26 FA 83 E7 2D CD 5D B8 C4 DC EB 12 70 CF D6 1E"
     plain_text_list = [alpha_to_int([int(x, 16) % len(list(ALPHA))], "from") for x in hex_string.split()]
-    message_int_list = [list(BitArray(hex=x).bin) for x in hex_string.split()]
-    key_int_list = [list(BitArray(hex=x).bin) for x in hex_key.split()]
+    """message_int_list = [list(BitArray(hex=x).bin) for x in hex_string.split()]
+    key_int_list = [list(BitArray(hex=x).bin) for x in hex_key.split()]"""
 
-    byte_message = bytes.fromhex("".join(hex_string.split()))
-    byte_key = bytes.fromhex("".join(hex_string.split()))
-    print(bad_aes(message_int_list, key_int_list))
+    message_int_list = [int(x, 16) for x in hex_string.split()]
+    key_int_list = [int(x, 16) for x in hex_key.split()]
+    encrypted_list = [int(x, 16) for x in encrypted_string.split()]
 
-def bad_aes(plain, key):
+    blocks1 = []
+    blocks2 = []
+    blocks3 = []
+    i = 0
+    while i < len(message_int_list):
+        y = 0
+        temp1 = []
+        temp2 = []
+        temp3 = []
+        while y < len(message_int_list):
+            temp1.append(message_int_list[i])
+            temp2.append(key_int_list[i])
+            temp3.append(encrypted_list[i])
+            y += 1
+            i += 1
+        blocks1.append(temp1)
+        blocks2.append(temp2)
+        blocks3.append(temp3)
+
+
+    """byte_message = bytes.fromhex("".join(hex_string.split()))
+    byte_key = bytes.fromhex("".join(hex_string.split()))"""
+    encrypted = bad_aes_encrypt(blocks1, blocks2)
+    decrypted = bad_aes_decrypt(encrypted, blocks2)
+    result1 = []
+    result2 = []
+    for pair in zip(encrypted, decrypted):
+        for e1, e2 in zip(pair[0], pair[1]):
+            result1.append(hex(e1))
+            result2.append(hex(e2))
+    print("Encrypted,", hex_string)
+    print(result1)
+    print("Decrypted,", hex_string)
+    print(result2)
+
+
+def bad_aes_encrypt(plain, key):
     new_state = add_round_key(plain, key)
     new_state = shift_rows(new_state)
     return sub_bytes(new_state)
 
 
+def bad_aes_decrypt(plain, key):
+    new_state = sub_bytes(plain)
+    new_state = shift_rows(new_state)
+    return add_round_key(new_state, key)
+
+
 def add_round_key(state, key):
     Nb = len(state)
-    new_state = [[None for j in range(8)] for i in range(Nb)]
+    new_state = [[None for j in range(16)] for i in range(Nb)]
     for i, word in enumerate(state):
         for j, byte in enumerate(word):
-            new_state[i][j] = int(byte) ^ int(key[i][j])
+            new_state[i][j] = byte ^ key[i][j]
 
     return new_state
 
@@ -131,13 +174,12 @@ def shift_rows(state):
     n = [word[:] for word in state]
 
     for i in range(Nb):
-        for j in range(8):
+        for j in range(16):
             n[i][j] = state[(i+j) % Nb][j]
 
     return n
 
 def sub_bytes(state):
-    print(state)
     return [[sbox[byte] for byte in word] for word in state]
 
 
