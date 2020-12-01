@@ -22,22 +22,53 @@ sbox = [
     0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16
 ]
+sbox = [int(x) for x in sbox]
 
 def oppgave1_a():
     print("OPPGAVE 1 A")
     keys = ["1000", "0011", "1111"]
     for key in keys:
-        exponent = len(list(key)) - 1
-        period = math.pow(4, exponent)
-        print(key, "has period: ", period)
+        period = 0
+        bits = [int(bit) for bit in list(key)]
+        current_key = bits.copy()
+        current_key.append(get_bit_1(current_key))
+        while True:
+            if len(current_key) % 4 == 0:
+                period += 1
+                if current_key[-4:] == bits:
+                    break
+            current_key.append(get_bit_1(current_key[-4:]))
+
+        print(key, "has period", period)
+
+        """exponent = len(list(key)) - 1
+        period = math.pow(2, exponent)
+        print(key, "has period: ", period)"""
+
+
+def get_bit_1(bits):
+    return sum(bits) % 2
+
+def get_bit_2(bits):
+    return (bits[0] + bits[3]) % 2
+
 
 def oppgave1_b():
-    print("\nOPPGAVE 1 B")
+    print("OPPGAVE 1 B")
     keys = ["1000", "0011", "1111"]
     for key in keys:
-        exponent = len(list(key)) - 1
-        period = math.pow(2, exponent)
-        print(key, "has period: ", period)
+        period = 0
+        bits = [int(bit) for bit in list(key)]
+        current_key = bits.copy()
+        current_key.append(get_bit_1(current_key))
+        while True:
+            if len(current_key) % 4 == 0:
+                period += 1
+                if current_key[-4:] == bits:
+                    break
+            current_key.append(get_bit_2(current_key[-4:]))
+        print(key, "has period", period)
+
 
 def oppgave_2():
     print("\nOPPGAVE 2")
@@ -107,6 +138,10 @@ def oppgave_5():
     """message_int_list = [list(BitArray(hex=x).bin) for x in hex_string.split()]
     key_int_list = [list(BitArray(hex=x).bin) for x in hex_key.split()]"""
 
+    """message_int_list = [int(x, 16) for x in hex_string.split()]
+    key_int_list = [int(x, 16) for x in hex_key.split()]
+    encrypted_list = [int(x, 16) for x in encrypted_string.split()]"""
+
     message_int_list = [int(x, 16) for x in hex_string.split()]
     key_int_list = [int(x, 16) for x in hex_key.split()]
     encrypted_list = [int(x, 16) for x in encrypted_string.split()]
@@ -133,43 +168,131 @@ def oppgave_5():
 
     """byte_message = bytes.fromhex("".join(hex_string.split()))
     byte_key = bytes.fromhex("".join(hex_string.split()))"""
-    encrypted = bad_aes_encrypt(blocks1, blocks2)
-    decrypted = bad_aes_decrypt(encrypted, blocks2)
+    encrypted = bad_aes_encrypt(blocks1[0], blocks2[0])
+    # print(encrypted)
+    #encrypted_copy = encrypted.copy()
+    # encrypted_copy = [x % len(ALPHA) for x in encrypted]
+    # print(encrypted_copy)
+    decrypted = bad_aes_decrypt(blocks3[0], blocks2[0])
+
     result1 = []
     result2 = []
+    # print([x % len(ALPHA) for x in encrypted], [x % len(ALPHA) for x in decrypted])
     for pair in zip(encrypted, decrypted):
-        for e1, e2 in zip(pair[0], pair[1]):
+        result1.append(hex(pair[0]))
+        result2.append(hex(pair[1]))
+        """for e1, e2 in zip(pair[0], pair[1]):
             result1.append(hex(e1))
-            result2.append(hex(e2))
+            result2.append(hex(e2))"""
     print("Encrypted,", hex_string)
-    print(result1)
+    result1 = [alpha_to_int([int(hex_num, 16) % len(ALPHA)], "from") for hex_num in result1]
+    #result1 = [chr(hex_num) for hex_num in result1]
+    print("Encrypted,", result1)
     print("Decrypted,", hex_string)
-    print(result2)
+    result2 = [alpha_to_int([(int(hex_num, 16)) % len(ALPHA)], "from") for hex_num in result2]
+    print("actual_decrypted:", result2)
+    # print("expected_decrypted:", plain_text_list)
 
+
+def oppgave_6():
+    print("\nOPPGAVE 6")
+    original_key = "2B 7E 15 16 28 AE D2 A6 AB F7 15 88 09 CF 4F 3C"
+    key_hex_list = [int(x, base=16) for x in original_key.split()]
+
+    words = []
+    i = 1
+    word = []
+    while len(key_hex_list) > i-1:
+        byte = key_hex_list[i-1]
+        word.append(byte)
+        if i % 4 == 0:
+            words.append(word)
+            word = []
+        i += 1
+
+    i = 0
+    words_old = [[hex(x) for x in word] for word in words]
+    print("before expansion:", words_old)
+
+    while i < 6:
+        word_last = words[len(words)-1]
+        expanded = expand(word_last)
+
+        current_word = expanded
+        for y in range(len(words)):
+            current_word = element_xor(current_word, words[y])
+            words[y] = current_word
+        i += 1
+
+    words = [[hex(x) for x in word] for word in words]
+    print("after expansion:", words)
+
+
+def element_xor(word1, word2):
+    xor_word = []
+    for x, y in zip(word1, word2):
+        xor_word.append(x ^ y)
+    return xor_word
+
+
+def expand(word):
+    new_word = rotate(word, 4)
+    # sub_word = sub_bytes(new_word)
+    # Rcon ?
+    new_word = element_xor(new_word, [1, 0, 0, 0])
+    return new_word
 
 def bad_aes_encrypt(plain, key):
+    print("ENCRYPTING", plain, "with key", key )
     new_state = add_round_key(plain, key)
+    print("Round key,", [x  for x in new_state])
+    new_state = sub_bytes(new_state)
+    print("Sub bytes,", [x for x in new_state])
     new_state = shift_rows(new_state)
-    return sub_bytes(new_state)
+    print("Shift rows,", [x for x in new_state])
+    return new_state
 
 
 def bad_aes_decrypt(plain, key):
-    new_state = sub_bytes(plain)
-    new_state = shift_rows(new_state)
-    return add_round_key(new_state, key)
+    print("\nDECRYPTING", plain, "with key", key)
+    new_state = shift_rows(plain)
+    print("Shift rows,", [x for x in new_state])
+    new_state = sub_bytes(new_state)
+    print("Sub bytes,", [x for x in new_state])
+    new_state = add_round_key(new_state, key)
+    print("Round key,", [x for x in new_state], "\n")
+    return new_state
 
 
-def add_round_key(state, key):
+"""def add_round_key(state, key):
     Nb = len(state)
     new_state = [[None for j in range(16)] for i in range(Nb)]
     for i, word in enumerate(state):
         for j, byte in enumerate(word):
             new_state[i][j] = byte ^ key[i][j]
 
-    return new_state
+    return new_state"""
 
+def add_round_key(state, roundKey):
+    for i in range(len(state)):
+        state[i] = state[i] ^ roundKey[i]
+        pass
+    return state
+
+def sub_bytes(state):
+    for i in range(len(state)):
+        state[i] = sbox[state[i]]
+    return state
 
 def shift_rows(state):
+    for i in range(4):
+        state[i*4:i*4+4] = rotate(state[i*4:i*4+4],i)
+    return state
+
+def rotate(word, n):
+    return word[n:]+word[0:n]
+
+"""def shift_rows(state):
     Nb = len(state)
     n = [word[:] for word in state]
 
@@ -177,10 +300,10 @@ def shift_rows(state):
         for j in range(16):
             n[i][j] = state[(i+j) % Nb][j]
 
-    return n
+    return n"""
 
-def sub_bytes(state):
-    return [[sbox[byte] for byte in word] for word in state]
+"""def sub_bytes(state):
+    return [[sbox[byte] for byte in word] for word in state]"""
 
 
 def cbc_hmac(blocks, init_vector):
@@ -290,3 +413,4 @@ if __name__ == "__main__":
     oppgave_3()
     oppgave_4()
     oppgave_5()
+    oppgave_6()
